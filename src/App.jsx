@@ -5,21 +5,22 @@ import useEthereum from "./hooks/useEthereum"
 import "./App.css"
 
 export default function App() {
-    const { account, connectWallet } = useEthereum()
+    const { account, connectWallet, wave, loading, lastMinedHash } =
+        useEthereum()
 
     return (
         <div className="mainContainer">
             <div className="dataContainer">
-                <div className="header">👋 Olá Pessoal!</div>
+                <div className="header">👋 Hi everyone!</div>
 
                 <div className="bio">
-                    Eu sou o Robson e só estou tentando ganhar um pouco mais pra
-                    sair do aperto. Legal, né? Conecte sua carteira Ethereum
-                    wallet e me manda um tchauzinho!
+                    I am Robson and I'm just trying to make some money by
+                    growing up in my carreer. Cool, right? Connect your ethereum
+                    wallet and send me a wave!
                 </div>
 
                 <button className="waveButton" onClick={wave}>
-                    Mandar Tchauzinho 👋
+                    {loading ? "Loading..." : "Send a Wave 👋"}
                 </button>
 
                 <button
@@ -27,7 +28,7 @@ export default function App() {
                     disabled={account.length > 0}
                     onClick={connectWallet}
                 >
-                    Conectar carteira
+                    Connect wallet
                 </button>
 
                 {lastMinedHash && (
