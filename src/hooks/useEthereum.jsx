@@ -8,7 +8,9 @@ const useEthereum = () => {
     const [account, setAccount] = useState("")
     const [loading, setLoading] = useState(false)
     const [lastMinedHash, setLastMinedHash] = useState("")
-    const contractAddress = "0x1AB97766d4e2313D20dd5b82cA5736cfa4bA55C1"
+    const [allWaves, setAllWaves] = useState([])
+
+    const contractAddress = "0x20AFaE433410903d06B2bbbfCB29821831188313"
     const contractABI = abi.abi
 
     const checkIfWalletIsConnected = () => {
@@ -53,8 +55,12 @@ const useEthereum = () => {
         }
     }
 
-    const wave = async () => {
+    const wave = async message => {
         try {
+            if (!message) {
+                alert("Type a message, then click to send a wave")
+                return
+            }
             setLoading(true)
             checkIfWalletIsConnected()
             const provider = new ethers.providers.Web3Provider(ethereum)
@@ -71,7 +77,7 @@ const useEthereum = () => {
                 count.toNumber()
             )
 
-            const waveTxn = await wavePortalContract.wave()
+            const waveTxn = await wavePortalContract.wave(message)
             console.log("Minerando... ", waveTxn.hash)
 
             await waveTxn.wait()
@@ -91,11 +97,46 @@ const useEthereum = () => {
         }
     }
 
+    const getAllWaves = async () => {
+        try {
+            const provider = new ethers.providers.Web3Provider(ethereum)
+            const signer = provider.getSigner()
+
+            const wavePortalContract = new ethers.Contract(
+                contractAddress,
+                contractABI,
+                signer
+            )
+
+            const waves = await wavePortalContract.getAllWaves()
+            if (!waves) {
+                console.error("Waves array is undefined")
+                return
+            }
+
+            let wavesCleaned = []
+            waves.forEach(wave => {
+                wavesCleaned.push({
+                    address: wave.waver,
+                    timestamp: new Date(wave.timestamp * 1000),
+                    message: wave.message
+                })
+            })
+
+            setAllWaves(wavesCleaned)
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     useEffect(() => {
         if (checkIfWalletIsConnected()) {
             manageAccounts()
+            getAllWaves()
         }
-    }, [checkIfWalletIsConnected])
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return {
         wave,
@@ -104,7 +145,8 @@ const useEthereum = () => {
         manageAccounts,
         connectWallet,
         loading,
-        lastMinedHash
+        lastMinedHash,
+        allWaves
     }
 }
 

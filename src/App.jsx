@@ -1,12 +1,15 @@
-import React from "react"
+import React, { useState } from "react"
 
 import useEthereum from "./hooks/useEthereum"
 
 import "./App.css"
 
 export default function App() {
-    const { account, connectWallet, wave, loading, lastMinedHash } =
+    const [message, setMessage] = useState("")
+    const { account, connectWallet, wave, loading, lastMinedHash, allWaves } =
         useEthereum()
+
+    console.log(allWaves)
 
     return (
         <div className="mainContainer">
@@ -19,7 +22,15 @@ export default function App() {
                     wallet and send me a wave!
                 </div>
 
-                <button className="waveButton" onClick={wave}>
+                <input
+                    type="text"
+                    className="message-input"
+                    value={message}
+                    onChange={e => setMessage(e.target.value)}
+                    placeholder="Type a message"
+                />
+
+                <button className="waveButton" onClick={() => wave(message)}>
                     {loading ? "Loading..." : "Send a Wave 👋"}
                 </button>
 
@@ -45,6 +56,17 @@ export default function App() {
                         </a>
                     </>
                 )}
+
+                <br />
+                {allWaves.map((wave, index) => {
+                    return (
+                        <div key={index} className="wave-list">
+                            <div>Endereço: {wave.address}</div>
+                            <div>Data/Hora: {wave.timestamp.toString()}</div>
+                            <div>Mensagem: {wave.message}</div>
+                        </div>
+                    )
+                })}
             </div>
         </div>
     )

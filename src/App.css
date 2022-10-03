@@ -42,3 +42,23 @@
     color: #00ff00;
     text-decoration: none;
 }
+
+.wave-list {
+    background-color: OldLace;
+    margin-top: 16px;
+    padding: 8px;
+}
+
+.message-input {
+    margin-top: 1rem;
+    border: solid 1px #ccc;
+    padding: 8px 12px;
+    font-size: 1rem;
+    color: #333;
+    border-radius: 8px;
+}
+
+.message-input:focus {
+    outline: none;
+    border-color: #42227d;
+}
