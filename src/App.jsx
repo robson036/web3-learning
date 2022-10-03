@@ -49,6 +49,7 @@ export default function App() {
 
                         <a
                             href={`https://goerli.etherscan.io/tx/${lastMinedHash}`}
+                            rel="noreferrer"
                             target="_blank"
                             className="link-tx"
                         >
