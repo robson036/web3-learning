@@ -31,3 +31,14 @@
     border: 0;
     border-radius: 5px;
 }
+
+.span-tx {
+    font-size: 1rem;
+    color: #42227d;
+}
+
+.link-tx {
+    font-size: 1rem;
+    color: #00ff00;
+    text-decoration: none;
+}

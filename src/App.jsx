@@ -29,6 +29,21 @@ export default function App() {
                 >
                     Conectar carteira
                 </button>
+
+                {lastMinedHash && (
+                    <>
+                        <br />
+                        <span className="span-tx">Wave TX:</span>
+
+                        <a
+                            href={`https://goerli.etherscan.io/tx/${lastMinedHash}`}
+                            target="_blank"
+                            className="link-tx"
+                        >
+                            {lastMinedHash}
+                        </a>
+                    </>
+                )}
             </div>
         </div>
     )
